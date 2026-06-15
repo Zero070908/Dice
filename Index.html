@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>3D Dice</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        flex-direction: column;
+    }
+
+    .dice {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 1s ease;
+    }
+
+    .face {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 60px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .top    { transform: rotateX(90deg) translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+    button {
+        margin-top: 30px;
+        padding: 15px 30px;
+        font-size: 20px;
+        border: none;
+        border-radius: 8px;
+        background: #00aaff;
+        color: white;
+        cursor: pointer;
+    }
+
+    #result {
+        margin-top: 20px;
+        font-size: 30px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+</style>
+</head>
+<body>
+
+<div class="dice" id="dice">
+    <div class="face front">1</div>
+    <div class="face back">6</div>
+    <div class="face right">3</div>
+    <div class="face left">4</div>
+    <div class="face top">5</div>
+    <div class="face bottom">2</div>
+</div>
+
+<button onclick="rollDice()">Würfeln</button>
+
+<div id="result"></div>
+
+<script>
+function rollDice() {
+    const dice = document.getElementById("dice");
+    const result = document.getElementById("result");
+
+    // Ergebnis auswürfeln
+    const number = Math.floor(Math.random() * 6) + 1;
+
+    // Ergebnis verstecken
+    result.style.opacity = 0;
+
+    // Rotation passend zur Zahl
+    const rotations = {
+        1: "rotateX(0deg) rotateY(0deg)",
+        2: "rotateX(90deg) rotateY(0deg)",
+        3: "rotateX(0deg) rotateY(-90deg)",
+        4: "rotateX(0deg) rotateY(90deg)",
+        5: "rotateX(-90deg) rotateY(0deg)",
+        6: "rotateX(180deg) rotateY(0deg)"
+    };
+
+    // Würfel drehen
+    dice.style.transform = rotations[number];
+
+    // Zahl erst NACH der Animation anzeigen
+    setTimeout(() => {
+        result.textContent = "Ergebnis: " + number;
+        result.style.opacity = 1;
+    }, 1000); // 1 Sekunde = Dauer der Animation
+}
+</script>
+
+</body>
+</html>
